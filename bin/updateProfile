@@ -4,8 +4,9 @@ pushd $DIR/../
 echo "Uno Mommento while we do a sync"
 
 git add *
-if [ $# >= 1 ]; then
-    git commit -a -m "$@"
+if [[ "$#" > "1" ]]; then
+    shift
+    git commit -a -m $@
 else
      git commit -a -m "Someone made a change"
 fi

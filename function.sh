@@ -19,4 +19,5 @@ getOsVer(){
             OSVer=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
         fi
     fi
+    return OSVer
 }
