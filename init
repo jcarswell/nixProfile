@@ -19,7 +19,7 @@ fi
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
 
 # Functions
-[ -f ./function.sh ] && . ./function.sh
+[ -f ./bin/function.sh ] && . ./function.sh
 OSVer="$(getOsVer)"
 
 

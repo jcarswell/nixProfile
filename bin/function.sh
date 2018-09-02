@@ -1,4 +1,3 @@
-
 lowercase(){
     echo "$1" | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
 }
@@ -19,5 +18,5 @@ getOsVer(){
             OSVer=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
         fi
     fi
-    return OSVer
+    export OSVer
 }
