@@ -1,0 +1,46 @@
+[[ "$-" != *i* ]] && return
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+pushd $DIR
+
+UPSTREAM=${1:-'@{u}'}
+LOCAL=$(git rev-parse @)
+BASE=$(git merge-base @ "$UPSTREAM")
+
+if [ $LOCAL = $BASE ]; then
+    git pull
+    ${DIR}/install.sh
+    . ${0}
+    exit
+fi
+
+## Source Global config
+[ -f /etc/bashrc ] && . /etc/bash.bashrc
+[ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
+
+# Functions
+[ -f ./function.sh ] && . ./function.sh
+OSVer="$(getOsVer)"
+
+
+#source user global configs
+if [ -d "./shell/" ]
+    for f in ./shell/*.sh; do source $f; done
+fi
+
+#source os specific configs
+if [ -d "./os/${OSVer}/" ]; then
+    for f in ./os/${OSVer}/*.sh; do source $f; done
+fi
+if [ -d "./os/${OSTYPE}/" ]; then
+    for f in ./os/${OSTYPE}/*.sh; do source $f; done
+fi
+
+#source local not synced configs
+if [ -d "./local/" ]
+    for f in ./local/*.sh; do source $f; done
+fi
+
+
+popd
+# vim: ts=4:syntax=sh:expandtab:sw=4

@@ -1,0 +1,9 @@
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+pushd $DIR/../
+
+echo "Uno Mommento while we do a sync"
+
+[ -z ${1} ] && git commit -a -m "${1}" || git commit -a -m "Someone made a change"
+git push
+
+# vim: sytax=sh
