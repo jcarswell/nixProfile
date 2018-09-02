@@ -6,7 +6,9 @@ pushd $DIR
 . ./bin/functions.sh
 OSVer="$(getOsVer)"
 
-for f in ./configs/; do 
+cd ./configs
+for f in ./; do 
+    mv ${HOME}/$f $HOME/$f-bak
     ln -s $f ${HOME}/
 done
 
