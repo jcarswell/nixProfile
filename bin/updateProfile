@@ -1,5 +1,4 @@
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pushd $DIR/../
+pushd ${JPRO} > /dev/null
 
 echo "Uno Mommento while we do a sync"
 
@@ -8,8 +7,10 @@ if [[ "$#" > "1" ]]; then
     shift
     git commit -a -m $@
 else
-     git commit -a -m "Someone made a change"
+    git commit -a -m "Someone made a change"
 fi
 git push
+git pull
 
+popd > /dev/null
 # vim: ts=4:sw=4:syntax=sh
