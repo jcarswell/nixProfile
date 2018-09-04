@@ -1,8 +1,8 @@
 #set -x
 [[ "$-" != *i* ]] && return
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pushd $DIR
+export JPRO="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+pushd $JPRO
 
 #Check for profile changes and pull
 UPSTREAM=${1:-'@{u}'}
@@ -14,7 +14,7 @@ if [ $REMOTE = $BASE ]; then
     echo "[WARN] You've made changes to you profile, that are not commited"
 elif [ $LOCAL = $BASE ]; then
     git pull
-    ${DIR}/install.sh
+    ${JPRO}/install.sh
     . ${0}
     return $?
 fi

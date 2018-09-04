@@ -1,2 +1,2 @@
-eval `dircolors -b ${HOME}/.dircolors`
-export PATH=$PATH:${HOME}/bin
+eval `dircolors -b ${JPRO}/extras/.dircolors`
+export PATH=$PATH:${JPRO}/bin

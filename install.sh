@@ -1,7 +1,7 @@
 echo Setting up the shell
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pushd $DIR
+export JPRO="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+pushd $JPRO
 
 . ./bin/function.sh
 OSVer="$(getOsVer)"
@@ -11,13 +11,13 @@ cd ./configs
 for f in .[a-zA-Z0-9]*; do 
     if [[ "${f}" != ".[a-zA-Z0-9]*" ]]; then
         mv ${HOME}/$f $HOME/$f-bak
-        ln -s ${DIR}/configs/$f ${HOME}/
+        ln -s ${JPRO}/configs/$f ${HOME}/
     fi
 done
 for f in [a-zA-Z0-9]*; do 
     if [[ "${f}" != "[a-zA-Z0-9]*" ]]; then
         mv ${HOME}/$f $HOME/$f-bak
-        ln -s ${DIR}/configs/$f ${HOME}/
+        ln -s ${JPRO}/configs/$f ${HOME}/
     fi
 done
 cd ..
@@ -25,23 +25,23 @@ cd ..
 # try and copy the WSL/MIN-tty config to the appropriate user.
 # This assumes that the user name matches
 if [ -f /mnt/c/Users/${USER}/AppData/Roaming/wsltty/config ] && 
-    [ -f ${DIR}/configs/.mintty ]; then
+    [ -f ${JPRO}/configs/.mintty ]; then
     mv /mnt/c/Users/jcarswell/AppData/Roaming/wsltty/config{,-bck}
-    cp ${DIR}/configs/.mintty /mnt/c/Users/${USER}/AppData/Roaming/wsltty/config
+    cp ${JPRO}/configs/.mintty /mnt/c/Users/${USER}/AppData/Roaming/wsltty/config
 else
     echo "If you are using wsltty, please copy ~/.mintty to %appdata%/wsltty/config"
 fi
 
 # create the bashrc and bashprofile scripts to source the init script
 cat <<EOF > ${HOME}/.bashrc
-. ${DIR}/init
+. ${JPRO}/init
 EOF
 
 cat <<EOF > ${HOME}/.bash_profile
-. ${DIR}/init
+. ${JPRO}/init
 EOF
 
-[ -d ${DIR}/local ] || mkdir ${DIR}/local
+[ -d ${JPRO}/local ] || mkdir ${DIR}/local
 
 # Auto install pre-req's (optional), if interactive
 if [[ "$-" != *i* ]]; then
