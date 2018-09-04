@@ -41,7 +41,7 @@ cat <<EOF > ${HOME}/.bash_profile
 . ${JPRO}/init
 EOF
 
-[ -d ${JPRO}/local ] || mkdir ${DIR}/local
+[ -d ${JPRO}/local ] || mkdir ${JPRO}/local && touch ${JPRO}/local/example.sh
 
 # Auto install pre-req's (optional), if interactive
 if [[ "$-" != *i* ]]; then
