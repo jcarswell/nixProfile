@@ -1,7 +1,7 @@
 echo Setting up the shell
 
 export JPRO="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-pushd $JPRO
+pushd $JPRO > /dev/null
 
 . ./bin/function.sh
 OSVer="$(getOsVer)"
@@ -68,6 +68,6 @@ if [[ "${ans}" == "y" ]] || [[ "${ans}" == "Y" ]]; then
     fi
 fi
 
-popd
+popd > /dev/null
 
 . ${HOME}/.bashrc
