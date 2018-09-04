@@ -1,17 +1,22 @@
+#set -x
 [[ "$-" != *i* ]] && return
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 pushd $DIR
 
+#Check for profile changes and pull
 UPSTREAM=${1:-'@{u}'}
 LOCAL=$(git rev-parse @)
 BASE=$(git merge-base @ "$UPSTREAM")
+REMOTE=$(git rev-parse "$UPSTREAM")
 
-if [ $LOCAL = $BASE ]; then
+if [ $REMOTE = $BASE ]; then
+    echo "[WARN] You've made changes to you profile, that are not commited"
+elif [ $LOCAL = $BASE ]; then
     git pull
     ${DIR}/install.sh
     . ${0}
-    exit
+    return $?
 fi
 
 ## Source Global config
@@ -19,12 +24,11 @@ fi
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
 
 # Functions
-[ -f ./bin/function.sh ] && . ./function.sh
+[ -f ./bin/function.sh ] && . ./bin/function.sh
 OSVer="$(getOsVer)"
 
-
 #source user global configs
-if [ -d "./shell/" ]
+if [ -d "./shell/" ]; then
     for f in ./shell/*.sh; do source $f; done
 fi
 
@@ -37,10 +41,10 @@ if [ -d "./os/${OSTYPE}/" ]; then
 fi
 
 #source local not synced configs
-if [ -d "./local/" ]
+if [ -d "./local/" ]; then
     for f in ./local/*.sh; do source $f; done
 fi
 
-
+#set +x
 popd
 # vim: ts=4:syntax=sh:expandtab:sw=4
