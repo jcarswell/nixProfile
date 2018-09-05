@@ -1,6 +1,7 @@
+#!/bin/bash
 alias vi="vim"
-alias ll="exa --long --git"
+alias ll="ls -lAh --color"
 alias ls="ls --color"
-alias preview="fzf --preview 'bat --color \"always\" {}'"
+#alias preview="fzf --preview 'bat --color \"always\" {}'"
 
-export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vi {})+abort'"
+#export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(vi {})+abort'"
