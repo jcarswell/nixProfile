@@ -3,8 +3,7 @@ pushd ${JPRO} > /dev/null
 echo "Uno Mommento while we do a sync"
 
 git add *
-if [[ "$#" > "1" ]]; then
-    shift
+if [[ "$#" == "1" ]]; then
     git commit -a -m $@
 else
     git commit -a -m "Someone made a change"
