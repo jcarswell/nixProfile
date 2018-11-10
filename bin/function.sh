@@ -7,7 +7,8 @@ getOsVer(){
         OSVer="cygwin"
     elif [ "${OSTYPE}" == "darwin" ]; then
         OSVer="mac"
-    elif [ "${OSTYPE}" == "linux-gnu" ]; then
+    elif [ "${OSTYPE}" == "linux-gnu" ] || 
+       [ "${OSTYPE}" == "linux" ]; then
        if [ -f /etc/redhat-release ] ; then
             OSVer=`cat /etc/redhat-release |sed s/\ release.*//`
         elif [ -f /etc/SuSE-release ] ; then
