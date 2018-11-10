@@ -40,6 +40,10 @@ fi
 if [ -d "./os/${OSTYPE}/" ]; then
     for f in ./os/${OSTYPE}/*.sh; do source $f; done
 fi
+if [ ${OSTYPE} == "linux" ]; then
+    for f in ./os/linux-gnu/*.sh; do source $f; done
+fi
+
 
 #source local not synced configs
 if [ -d "./local/" ]; then
