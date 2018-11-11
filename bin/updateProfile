@@ -3,23 +3,41 @@ set -x
 
 pushd ${JPRO} > /dev/null
 
-echo "Uno Mommento while we do a sync"
-shift $@
+. version
+VER=$nixProfile
+MSG="An update has occured"
+LASTVAL=""
 
+## Read in agruments
+for x in "$@"; do
+    if [[ "${x}" == "-v" ]]; then
+        LASTVAL="$x"
+    elif [[ "${x}" == "-m" ]]; then
+        LASTVAL="$x"
+    else
+        if [[ "${LASTVAL}" == "-v" ]]; then
+            VER=$x
+        elif [[ "${LASTVAL}" == "-m" ]]; then
+            MSG="${x}"
+        fi
+    fi
+done
+
+echo "Uno Mommento while we do a sync"
 git diff-index --quiet HEAD --
 
 ## Increment version and commit changes
 if [[ "$?" == "1" ]]; then
-    . version
-    nixProfile += .1
-    echo "export nixProfile=" $nixProfile > version
+    
+    # Update Version number
+    if [[ $VER == $nixProfile ]]; then
+        VER+=0.1
+    fi
+    echo "export nixProfile="$VER > version
+    echo "#This is an automatically generated file do not update it manually" >> version
 
     git add *
-    if [[ "$#" == "1" ]]; then
-        git commit -a -m '${@}'
-    else
-        git commit -a -m "Someone made a change"
-    fi
+    git commit -m "${MSG}"
 else
     echo "nothing to commit ... syncing"
 fi
