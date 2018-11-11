@@ -1,13 +1,29 @@
+#!/bin/bash
+set -x
+
 pushd ${JPRO} > /dev/null
 
 echo "Uno Mommento while we do a sync"
+shift $@
 
-git add *
-if [[ "$#" == "1" ]]; then
-    git commit -a -m $@
+git diff-index --quiet HEAD --
+
+## Increment version and commit changes
+if [[ "$?" == "1" ]]; then
+    . version
+    nixProfile += .1
+    echo "export nixProfile=" $nixProfile > version
+
+    git add *
+    if [[ "$#" == "1" ]]; then
+        git commit -a -m '${@}'
+    else
+        git commit -a -m "Someone made a change"
+    fi
 else
-    git commit -a -m "Someone made a change"
+    echo "nothing to commit ... syncing"
 fi
+
 git push
 git pull
 
