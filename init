@@ -13,6 +13,7 @@ sh -c $(curl -sL https://git.ttdev.ca/josh.carswell/nixProfile/raw/master/versio
 if [[ $STARTVer < $nixProfile ]]; then
     echo "look's like theirs a newer version"
     git pull
+    popd > /dev/null
     ${JPRO}/install.sh
     . ${0}
     $RETVAL=$?
