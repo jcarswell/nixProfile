@@ -1,3 +1,1 @@
-#!/bin/sh
-nixProfile=1.0
-export nixProfile
+export nixProfile=1.0
