@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 echo Setting up the shell
 
 export JPRO="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
@@ -35,11 +35,15 @@ fi
 
 # create the bashrc and bashprofile scripts to source the init script
 cat <<EOF > ${HOME}/.bashrc
-. ${JPRO}/init
+if [ -z "\${JPROF}" ]; then
+  . ${JPRO}/init
+fi
 EOF
 
 cat <<EOF > ${HOME}/.bash_profile
-. ${JPRO}/init
+if [ -z "\${JPROF}" ]; then
+  . ${JPRO}/init
+fi
 EOF
 
 [ -d ${JPRO}/local ] || mkdir ${JPRO}/local && touch ${JPRO}/local/example.sh
