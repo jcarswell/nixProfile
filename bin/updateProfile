@@ -31,7 +31,7 @@ if [[ "$?" == "1" ]]; then
     
     # Update Version number
     if [[ $VER == $nixProfile ]]; then
-        VER+=0.1
+        VER=$(python -c "print(${VER} + 0.01)")
     fi
     echo "export nixProfile="$VER > version
     echo "#This is an automatically generated file do not update it manually" >> version

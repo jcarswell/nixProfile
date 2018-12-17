@@ -1,2 +1,2 @@
-export nixProfile=1.30.10.10.10.10.10.1
+export nixProfile=1.11
 #This is an automatically generated file do not update it manually
