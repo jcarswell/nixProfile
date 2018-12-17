@@ -8,7 +8,9 @@ pushd $JPRO > /dev/null
 . version
 STARTVer=$nixProfile
 
-sh -c $(curl -sL https://git.ttdev.ca/josh.carswell/nixProfile/raw/master/version) > /dev/null
+ping -c1 -w1 git.ttdev.ca 2&>1 /dev/null
+
+[ $? == 0 ] && sh -c $(curl -sL -m 10 https://git.ttdev.ca/josh.carswell/nixProfile/raw/master/version) > /dev/null
 
 if [[ $STARTVer < $nixProfile ]]; then
     echo "look's like theirs a newer version"
