@@ -41,7 +41,7 @@ fi
 #fi
 
 ## Source Global config
-[ -f /etc/bashrc ] && . /etc/bash.bashrc
+[ -f /etc/bashrc ] && . /etc/bashrc
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
 
 # Functions
