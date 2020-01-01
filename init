@@ -6,39 +6,24 @@ export JPRO="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 pushd $JPRO > /dev/null
 
 . version
-STARTVer=$nixProfile
+INSTALLED_VERSION=$nixProfile
 
 curl -Ss -m 5 git.ttdev.ca > /dev/null
 
-[ $? == 0 ] && curl -sL -m 10 https://git.ttdev.ca/josh.carswell/nixProfile/raw/master/version | bash - 
+[ $? == 0 ] && curl -o- https://git.ttdev.ca/josh.carswell/nixProfile/raw/master/version | bash
 
-if [[ $STARTVer < $nixProfile ]]; then
+if [[ $INSTALLED_VERSION < $nixProfile ]]; then
     echo "look's like theirs a newer version"
     git pull
     popd > /dev/null
     ${JPRO}/install.sh
     . ${0}
-    $RETVAL=$?
+    RETVAL=$?
     echo "Update complete, you may need to restart this terminal"
     return $RETVAL
-elif [[ $STARTVer > $nixProfile ]]; then
+elif [[ $INSTALLED_VERSION > $nixProfile ]]; then
     echo "looks like you haven't pushed your changes yet"
 fi
-
-#Check for profile changes and pull
-#UPSTREAM=${1:-'@{u}'}
-#LOCAL=$(git rev-parse @)
-#BASE=$(git merge-base @ "$UPSTREAM")
-#REMOTE=$(git rev-parse "$UPSTREAM")
-
-#if [ $REMOTE = $BASE ]; then
-#    echo "[WARN] You've made changes to you profile, that are not commited"
-#elif [ $LOCAL = $BASE ]; then
-#    git pull
-#    ${JPRO}/install.sh
-#    . ${0}
-#    return $?
-#fi
 
 ## Source Global config
 [ -f /etc/bashrc ] && . /etc/bashrc
@@ -63,7 +48,6 @@ fi
 if [ ${OSTYPE} == "linux" ]; then
     for f in ./os/linux-gnu/*.sh; do source $f; done
 fi
-
 
 #source local not synced configs
 if [ -d "./local/" ]; then
