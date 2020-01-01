@@ -6,13 +6,22 @@ export JPRO="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 pushd $JPRO > /dev/null
 
 . version
-INSTALLED_VERSION=$nixProfile
+INSTALLED_VERSION=${nixProfile}
+
+unset nixProfile
 
 curl -Ss -m 5 git.ttdev.ca > /dev/null
 
-[ $? == 0 ] && curl -o- https://git.ttdev.ca/josh.carswell/nixProfile/raw/master/version | bash
+if [ $? == 0 ]; then
+    tempfile=$(mktemp /tmp/init-version.XXXX)
+    curl -s https://git.ttdev.ca/josh.carswell/nixProfile/raw/master/version > $tempfile
+    . $tempfile
+    rm -f $tempfile
+fi
 
-if [[ $INSTALLED_VERSION < $nixProfile ]]; then
+if [ -z $nixProfile ]; then
+    echo -e '\033[31mERROR:\033[0m Failed to retrive update info'
+elif [[ $INSTALLED_VERSION < $nixProfile ]]; then
     echo "look's like theirs a newer version"
     git pull
     popd > /dev/null
@@ -25,6 +34,7 @@ elif [[ $INSTALLED_VERSION > $nixProfile ]]; then
     echo "looks like you haven't pushed your changes yet"
 fi
 
+. version
 ## Source Global config
 [ -f /etc/bashrc ] && . /etc/bashrc
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
