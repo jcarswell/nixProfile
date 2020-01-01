@@ -19,7 +19,7 @@ __shell_ps1() {
     local exit=$?
     local gitstring=$(__git_ps1)
 
-    PS1="╭─${BLUE}[${LIGHTBLUE} \w ${BLUE}]${BASE}─${BLUE}[${YELLOW}\u${BLUE}@${RED}\h${BLUE}]${BASE}─${BLUE}[\`${SELECT}\`${BLUE}]${BASE}\n╰─${BLUE}("
+    PS1="╭─${BLUE}[${LIGHTBLUE} \w ${BLUE}]${BASE}─${BLUE}[${YELLOW}\u${BLUE}@${RED}\h${BLUE}]${BASE}─${BLUE}[\`${SELECT}\`${BLUE}]${BASE}\n╰─${BLUE}["
 
     if [ -n "${gitstring}" ]; then
         if [ -n "${VIRTUAL_ENV}" ]; then
@@ -31,7 +31,7 @@ __shell_ps1() {
         PS1+="${RED}\$(basename ${VIRTUAL_ENV})${BASE}"
     fi
 
-    PS1+="${BLUE}) ${YELLOW}>${RESET}${BASE} "
+    PS1+="${BLUE}] ${YELLOW}>${RESET}${BASE} "
 
     history -a
     history -c
