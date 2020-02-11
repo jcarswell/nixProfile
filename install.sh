@@ -4,6 +4,9 @@ echo Setting up the shell
 export JPRO="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 pushd $JPRO > /dev/null
 
+#Pull sub-modules
+git submodule update --init
+
 . ./bin/function.sh
 OSVer="$(getOsVer)"
 
@@ -71,6 +74,12 @@ if [[ "${ans}" == "y" ]] || [[ "${ans}" == "Y" ]]; then
         [[ "${?}" != "0" ]] && ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
         brew install go --cross-compile-common
     fi
+fi
+
+which bat 2>&1 /dev/null
+
+if [[ "${?}" != "0" ]]; then
+    ln -s ${JPRO}/usr/share/bat/bat ${JPRO}/bin/bat
 fi
 
 popd > /dev/null
