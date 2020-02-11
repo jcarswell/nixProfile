@@ -1,4 +1,5 @@
 local/*
 *.swp
 bin/bat
-
+config/.vim/bundle/
+!config/.vim/bundle/Vundle.vim

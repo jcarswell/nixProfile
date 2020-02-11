@@ -51,6 +51,9 @@ EOF
 
 [ -d ${JPRO}/local ] || mkdir ${JPRO}/local && touch ${JPRO}/local/example.sh
 
+#Update Vundle
+vim -c "PluginInstall" -c "q" -c "q"
+
 # Auto install pre-req's (optional), if interactive
 if [[ "$-" != *i* ]]; then
     ans="n"
