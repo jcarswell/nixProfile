@@ -81,7 +81,8 @@ fi
 
 which bat 2>&1 /dev/null
 
-if [[ "${?}" != "0" ]]; then
+if [[ "${?}" == "0" ]]; then
+    [ -e ${JPRO}/bin/bat ] && rm -f ${JPRO}/bin/bat
     ln -s ${JPRO}/usr/share/bat/bat ${JPRO}/bin/bat
 fi
 
