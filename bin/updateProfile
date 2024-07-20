@@ -38,7 +38,7 @@ if [[ "$?" == "1" ]]; then
 
     git add version
     git commit -m "${MSG}"
-    git tag ${VER}
+    git tag -a ${VER} -m "${MSG}"
 else
     echo "nothing to commit ... syncing"
 fi
