@@ -44,6 +44,7 @@ else
 fi
 
 git push
+git push --tags
 git pull
 
 popd > /dev/null
