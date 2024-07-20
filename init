@@ -7,34 +7,84 @@ pushd $JPRO > /dev/null
 
 . version
 INSTALLED_VERSION=${nixProfile}
+RELEASE_INFO=${nixProfile}
 
-unset nixProfile
+curl -Ss -m 5 github.com > /dev/null
 
-curl -Ss -m 5 git.ttdev.ca > /dev/null
+get_ans () {
+    >&2 printf "${*}"
+    read ans
+    while [[ $ans != [yYnN] ]]; do
+        >&2 echo "Expected y or n" 
+        >&2 printf "${*}"
+        read ans
+    done
+    
+    if [[ ans == [yY] ]]; then
+        return 1
+    else
+        return 0
+    fi
+}
 
-if [ $? == 0 ]; then
-    tempfile=$(mktemp /tmp/init-version.XXXX)
-    curl -s https://git.ttdev.ca/josh.carswell/nixProfile/raw/master/version > $tempfile
-    . $tempfile
-    rm -f $tempfile
-fi
-
-if [ -z $nixProfile ]; then
-    echo -e '\033[31mERROR:\033[0m Failed to retrive update info'
-elif [[ $INSTALLED_VERSION < $nixProfile ]]; then
-    echo "look's like theirs a newer version"
-    git pull
-    popd > /dev/null
+update_release () {
+    if [[ $(git status > /dev/null 2>&1; echo $?) > 0 ]]; then
+        download=$(curl -s https://api.github.com/repos/jcarswell/nixProfile/releases/latest | grep '"tarball_url":' | cut -d'"' -f 4)
+        curl -Ls ${download} -o update.tgz
+        tar xzf update.tgz
+        cp -R jcarswell-nixProfile*/[abeiosuv]* $JPRO
+        if $(get_ans "Do you wish to update your configs? (y/n)"); then
+            find $JPRO/config -type f -exec cp {{},.bak} \; > /dev/null
+            cp -R $JPRO/jcarswell-nixProfile*/config $JPRO
+        fi
+        rm -rf $JPRO/jcarswell-nixProfile*
+        rm -f $JPRO/update.tgz
+    else
+        git pull --all
+        git pull --recurse-submodules
+    fi
+    popd > /dev/null 2>&1
     ${JPRO}/install.sh
     . ${0}
-    RETVAL=$?
-    echo "Update complete, you may need to restart this terminal"
-    return $RETVAL
-elif [[ $INSTALLED_VERSION > $nixProfile ]]; then
-    echo "looks like you haven't pushed your changes yet"
+    >&2 echo "Update Completed, you should restart any open terminals"
+}
+
+update_git_release () {
+    origin=$(git config remote.origin.url)
+    if [[ "${origin}" == "git@git.ttdev.ca:josh.carswell/nixProfile.git" ]]; then
+        git remote set-url origin git@github.com:jcarswell/nixProfile.git 
+        git pull --all
+        git switch main > /dev/null 2>&1
+        git branch -d master > /dev/null 2>&1
+        update_release
+    else
+        rm -rf .git
+        update_release
+    fi
+    return $?
+}
+
+if [[ $nixProfile < 4 ]]; then
+    if $(get_ans "You are on an old release, do you wish to update?(y/n) "); then
+        update_git_release
+    fi
 fi
 
-. version
+if [ $? == 0 ]; then
+    RELEASE_INFO=$(curl -s https://api.github.com/repos/jcarswell/nixProfile/releases/latest | grep '"name":' | cut -d '"' -f 4)
+fi
+
+if [[ $RELEASE_INFO > $nixProfile ]]; then
+    echo "Theres a newer version avalible."
+    ans=$(get_ans "Would you like to update to $RELEASE_INFO?(y/n) ")
+    if [[ $ans == [yY] ]]; then 
+        update_release
+    fi
+    return $?
+elif [[ $RELEASE_INFO < $nixProfile ]]; then
+    echo "Looks like you haven't pushed your changes yet"
+fi
+
 ## Source Global config
 [ -f /etc/bashrc ] && . /etc/bashrc
 [ -f /etc/bash.bashrc ] && . /etc/bash.bashrc
