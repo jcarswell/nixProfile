@@ -23,7 +23,7 @@ for x in "$@"; do
     fi
 done
 
-echo "Uno Mommento while we do a sync"
+echo "Un Momento while we do a sync"
 git diff-index --quiet HEAD --
 
 ## Increment version and commit changes
