@@ -28,10 +28,9 @@ cd ..
 
 # try and copy the WSL/MIN-tty config to the appropriate user.
 # This assumes that the user name matches
-if [ -f /mnt/c/Users/${USER}/AppData/Roaming/wsltty/config ] && 
-    [ -f ${JPRO}/configs/.mintty ]; then
-    mv /mnt/c/Users/jcarswell/AppData/Roaming/wsltty/config{,-bck}
-    cp ${JPRO}/configs/.mintty /mnt/c/Users/${USER}/AppData/Roaming/wsltty/config
+if [ ! -z $APPDATA ] && [ -f ${JPRO}/configs/.mintty ]; then
+    mv $(echo $APPDATA | sed -s 's/\\/\//g' | sed -s 's/C:/\/mnt\/c/g')/config{,-bck}
+    cp ${JPRO}/configs/.mintty $(echo $APPDATA | sed -s 's/\\/\//g' | sed -s 's/C:/\/mnt\/c/g')/config
 else
     echo "If you are using wsltty, please copy ~/.mintty to %appdata%/wsltty/config"
 fi
