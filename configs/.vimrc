@@ -42,11 +42,12 @@ set autoindent		" always set autoindenting on
 colorscheme solarized
 syntax on
 filetype off
+set encoding=utf-8
 
 set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+"call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+call vundle#begin('~/.vim.local/')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
@@ -67,7 +68,6 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
-Plugin 'zxqfl/tabnine-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -92,6 +92,15 @@ map Q gq
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
+map <F15> <nop>
+map <F16> <nop>
+map <s-F15> <nop>
+map <s-F16> <nop>
+map <C-F15> <nop>
+map <C-F16> <nop>
+map <Help> <Nop>
+map <s-Help> <Nop>
+map <C-Help> <Nop>
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
