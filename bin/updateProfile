@@ -36,8 +36,9 @@ if [[ "$?" == "1" ]]; then
     echo "export nixProfile="$VER > version
     echo "#This is an automatically generated file do not update it manually" >> version
 
-    git add *
+    git add version
     git commit -m "${MSG}"
+    git tag ${VER}
 else
     echo "nothing to commit ... syncing"
 fi
